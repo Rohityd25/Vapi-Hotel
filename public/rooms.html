@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browse Rooms — Hotel Vapi</title>
+  <meta name="description" content="Browse and filter premium hotel rooms at Hotel Vapi. Find the perfect room for your stay with real-time availability." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏨</text></svg>" />
+</head>
+<body>
+
+<!-- NAVBAR (same as index) -->
+<nav class="navbar scrolled" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-icon">🏨</span>
+      <span>Hotel <span class="logo-accent">Vapi</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="rooms.html" class="nav-link active">Rooms</a></li>
+      <li><a href="index.html#amenities" class="nav-link">Amenities</a></li>
+      <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+    </ul>
+    <div class="nav-actions" id="navActions">
+      <div id="authButtons">
+        <a href="login.html" class="btn btn-outline">Login</a>
+        <a href="register.html" class="btn btn-primary">Register</a>
+      </div>
+      <div id="userMenu" style="display:none;">
+        <div class="user-avatar-wrap" onclick="toggleUserDropdown()">
+          <img src="" alt="Avatar" class="user-avatar" id="navAvatar" />
+          <span id="navUserName"></span>
+          <span class="dropdown-arrow">▾</span>
+        </div>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="dashboard.html"><span>👤</span> My Dashboard</a>
+          <a href="bookings.html"><span>📋</span> My Bookings</a>
+          <a href="admin.html" id="adminLink" style="display:none;"><span>⚙️</span> Admin Panel</a>
+          <hr />
+          <a href="#" onclick="logout()"><span>🚪</span> Logout</a>
+        </div>
+      </div>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-bg"></div>
+  <div class="container">
+    <h1>Our <span class="hero-accent">Rooms</span></h1>
+    <p>Choose from our curated selection of luxury accommodations</p>
+  </div>
+</div>
+
+<!-- ROOMS PAGE CONTENT -->
+<section class="section">
+  <div class="container">
+    <div class="rooms-page-layout">
+
+      <!-- FILTER SIDEBAR -->
+      <aside class="filter-sidebar" id="filterSidebar">
+        <div class="filter-header">
+          <h3>🔍 Filter Rooms</h3>
+          <button class="btn-clear" onclick="clearFilters()">Clear All</button>
+        </div>
+
+        <!-- Date Picker -->
+        <div class="filter-section">
+          <h4>📅 Dates</h4>
+          <div class="form-group">
+            <label>Check In</label>
+            <input type="date" id="filterCheckIn" class="form-control" onchange="applyFilters()" />
+          </div>
+          <div class="form-group">
+            <label>Check Out</label>
+            <input type="date" id="filterCheckOut" class="form-control" onchange="applyFilters()" />
+          </div>
+        </div>
+
+        <!-- Room Type -->
+        <div class="filter-section">
+          <h4>🏠 Room Type</h4>
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" value="Standard"     onchange="applyFilters()" class="type-filter" /> Standard
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" value="Deluxe"       onchange="applyFilters()" class="type-filter" /> Deluxe
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" value="Suite"        onchange="applyFilters()" class="type-filter" /> Suite
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" value="Presidential" onchange="applyFilters()" class="type-filter" /> Presidential
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" value="Family"       onchange="applyFilters()" class="type-filter" /> Family
+            </label>
+          </div>
+        </div>
+
+        <!-- Price Range -->
+        <div class="filter-section">
+          <h4>💰 Price Per Night</h4>
+          <div class="price-range-display">
+            <span>₹<span id="priceMin">0</span></span>
+            <span>₹<span id="priceMax">25000</span></span>
+          </div>
+          <input type="range" id="priceRangeMin" min="0"     max="25000" step="500" value="0"     class="range-slider" oninput="updatePriceFilter()" />
+          <input type="range" id="priceRangeMax" min="0"     max="25000" step="500" value="25000" class="range-slider" oninput="updatePriceFilter()" />
+        </div>
+
+        <!-- Guests -->
+        <div class="filter-section">
+          <h4>👥 Guests</h4>
+          <select id="filterGuests" class="form-control" onchange="applyFilters()">
+            <option value="">Any</option>
+            <option value="1">1 Guest</option>
+            <option value="2">2 Guests</option>
+            <option value="3">3 Guests</option>
+            <option value="4">4 Guests</option>
+            <option value="5">5+ Guests</option>
+          </select>
+        </div>
+
+        <!-- Sort -->
+        <div class="filter-section">
+          <h4>↕️ Sort By</h4>
+          <select id="sortBy" class="form-control" onchange="applyFilters()">
+            <option value="-createdAt">Newest First</option>
+            <option value="pricePerNight">Price: Low to High</option>
+            <option value="-pricePerNight">Price: High to Low</option>
+            <option value="-ratings">Highest Rated</option>
+          </select>
+        </div>
+
+        <button class="btn btn-gold btn-full mt-2" onclick="applyFilters()">Apply Filters</button>
+      </aside>
+
+      <!-- ROOMS GRID -->
+      <div class="rooms-main">
+        <!-- Search Bar -->
+        <div class="rooms-search-bar">
+          <input type="text" id="roomSearch" class="form-control" placeholder="🔍 Search rooms by name..." oninput="debounceSearch()" />
+          <div class="rooms-count" id="roomsCount">Loading...</div>
+          <button class="filter-toggle-btn" onclick="toggleFilterSidebar()">🔧 Filters</button>
+        </div>
+
+        <!-- Rooms Grid -->
+        <div class="rooms-grid" id="roomsGrid">
+          <div class="room-skeleton"></div>
+          <div class="room-skeleton"></div>
+          <div class="room-skeleton"></div>
+          <div class="room-skeleton"></div>
+          <div class="room-skeleton"></div>
+          <div class="room-skeleton"></div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <p>&copy; 2024 Hotel Vapi. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/rooms.js"></script>
+</body>
+</html>

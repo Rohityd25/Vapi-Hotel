@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel — Hotel Vapi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>" />
+</head>
+<body class="admin-page">
+
+<nav class="navbar scrolled" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-icon">🏨</span>
+      <span>Hotel <span class="logo-accent">Vapi</span> <span class="admin-tag">Admin</span></span>
+    </a>
+    <div class="nav-actions" id="navActions">
+      <div id="userMenu" style="display:none;">
+        <div class="user-avatar-wrap" onclick="toggleUserDropdown()">
+          <img src="" alt="Avatar" class="user-avatar" id="navAvatar" />
+          <span id="navUserName"></span>
+          <span class="dropdown-arrow">▾</span>
+        </div>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="dashboard.html"><span>👤</span> User Dashboard</a>
+          <hr />
+          <a href="#" onclick="logout()"><span>🚪</span> Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="admin-layout">
+  <!-- ADMIN SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar-logo">⚙️ Admin Panel</div>
+    <nav class="admin-nav">
+      <a href="#" class="admin-nav-link active" data-tab="dashboard" onclick="adminTab('dashboard')">
+        <span>📊</span> Dashboard
+      </a>
+      <a href="#" class="admin-nav-link" data-tab="rooms" onclick="adminTab('rooms')">
+        <span>🏨</span> Manage Rooms
+      </a>
+      <a href="#" class="admin-nav-link" data-tab="bookings" onclick="adminTab('bookings')">
+        <span>📋</span> All Bookings
+      </a>
+      <a href="#" class="admin-nav-link" data-tab="users" onclick="adminTab('users')">
+        <span>👥</span> Manage Users
+      </a>
+      <hr class="sidebar-divider" />
+      <a href="index.html" class="admin-nav-link">
+        <span>🌐</span> View Site
+      </a>
+      <a href="#" class="admin-nav-link" onclick="logout()">
+        <span>🚪</span> Logout
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ADMIN CONTENT -->
+  <main class="admin-main">
+
+    <!-- DASHBOARD TAB -->
+    <div class="admin-tab active" id="atab-dashboard">
+      <h1 class="admin-page-title">📊 Dashboard Overview</h1>
+
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon" style="background:rgba(99,102,241,0.15)">👥</div>
+          <div class="admin-stat-info">
+            <div class="admin-stat-num" id="aTotalUsers">—</div>
+            <div class="admin-stat-lbl">Total Users</div>
+          </div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon" style="background:rgba(201,169,110,0.15)">🏨</div>
+          <div class="admin-stat-info">
+            <div class="admin-stat-num" id="aTotalRooms">—</div>
+            <div class="admin-stat-lbl">Total Rooms</div>
+          </div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon" style="background:rgba(16,185,129,0.15)">📋</div>
+          <div class="admin-stat-info">
+            <div class="admin-stat-num" id="aTotalBookings">—</div>
+            <div class="admin-stat-lbl">Total Bookings</div>
+          </div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-icon" style="background:rgba(239,68,68,0.15)">💰</div>
+          <div class="admin-stat-info">
+            <div class="admin-stat-num" id="aTotalRevenue">—</div>
+            <div class="admin-stat-lbl">Total Revenue</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-grid-2">
+        <div class="admin-card">
+          <h3>Recent Bookings</h3>
+          <div id="adminRecentBookings" class="admin-table-wrap">
+            <div class="loading-shimmer"></div>
+            <div class="loading-shimmer"></div>
+            <div class="loading-shimmer"></div>
+          </div>
+        </div>
+        <div class="admin-card">
+          <h3>Room Type Distribution</h3>
+          <div id="roomTypeStats" class="room-type-stats"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROOMS TAB -->
+    <div class="admin-tab" id="atab-rooms" style="display:none;">
+      <div class="admin-tab-header">
+        <h1 class="admin-page-title">🏨 Manage Rooms</h1>
+        <button class="btn btn-gold" onclick="openRoomModal()">+ Add New Room</button>
+      </div>
+
+      <div id="adminRoomsList" class="admin-rooms-grid">
+        <div class="loading-shimmer"></div>
+        <div class="loading-shimmer"></div>
+        <div class="loading-shimmer"></div>
+      </div>
+    </div>
+
+    <!-- BOOKINGS TAB -->
+    <div class="admin-tab" id="atab-bookings" style="display:none;">
+      <div class="admin-tab-header">
+        <h1 class="admin-page-title">📋 All Bookings</h1>
+        <div class="admin-filter-row">
+          <select id="adminBookingFilter" class="form-control" onchange="loadAdminBookings()" style="width:auto;">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="checked-in">Checked In</option>
+            <option value="checked-out">Checked Out</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-table-wrap" id="adminBookingsTable">
+          <div class="loading-shimmer"></div>
+          <div class="loading-shimmer"></div>
+          <div class="loading-shimmer"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- USERS TAB -->
+    <div class="admin-tab" id="atab-users" style="display:none;">
+      <div class="admin-tab-header">
+        <h1 class="admin-page-title">👥 Manage Users</h1>
+      </div>
+
+      <div class="admin-card">
+        <div class="admin-table-wrap" id="adminUsersTable">
+          <div class="loading-shimmer"></div>
+          <div class="loading-shimmer"></div>
+          <div class="loading-shimmer"></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ADD/EDIT ROOM MODAL -->
+<div class="modal-overlay" id="roomModal" style="display:none;">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h2 id="roomModalTitle">Add New Room</h2>
+      <button class="modal-close" onclick="closeModal('roomModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="roomForm" onsubmit="saveRoom(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Room Name *</label>
+            <input type="text" id="rName" class="form-control" required placeholder="e.g. Deluxe Ocean View" />
+          </div>
+          <div class="form-group">
+            <label>Room Number *</label>
+            <input type="text" id="rNumber" class="form-control" required placeholder="e.g. 201" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Room Type *</label>
+            <select id="rType" class="form-control" required>
+              <option value="">Select Type</option>
+              <option value="Standard">Standard</option>
+              <option value="Deluxe">Deluxe</option>
+              <option value="Suite">Suite</option>
+              <option value="Presidential">Presidential</option>
+              <option value="Family">Family</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Price Per Night (₹) *</label>
+            <input type="number" id="rPrice" class="form-control" required min="0" placeholder="e.g. 4500" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Capacity (max guests) *</label>
+            <input type="number" id="rCapacity" class="form-control" required min="1" max="10" placeholder="e.g. 2" />
+          </div>
+          <div class="form-group">
+            <label>Floor Number</label>
+            <input type="number" id="rFloor" class="form-control" min="1" placeholder="e.g. 3" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description *</label>
+          <textarea id="rDescription" class="form-control" rows="4" required placeholder="Describe the room..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Image URL (or upload)</label>
+          <input type="text" id="rImageUrl" class="form-control" placeholder="https://... or leave blank for default" />
+        </div>
+
+        <div class="form-group">
+          <label>Amenities</label>
+          <div class="amenities-check-grid">
+            <label class="checkbox-label"><input type="checkbox" id="aWifi"     checked /> WiFi</label>
+            <label class="checkbox-label"><input type="checkbox" id="aAc"       checked /> AC</label>
+            <label class="checkbox-label"><input type="checkbox" id="aTv"       checked /> TV</label>
+            <label class="checkbox-label"><input type="checkbox" id="aMinibar"         /> Minibar</label>
+            <label class="checkbox-label"><input type="checkbox" id="aBalcony"         /> Balcony</label>
+            <label class="checkbox-label"><input type="checkbox" id="aJacuzzi"         /> Jacuzzi</label>
+            <label class="checkbox-label"><input type="checkbox" id="aBreakfast"       /> Breakfast</label>
+            <label class="checkbox-label"><input type="checkbox" id="aParking"         /> Parking</label>
+            <label class="checkbox-label"><input type="checkbox" id="aGym"             /> Gym</label>
+            <label class="checkbox-label"><input type="checkbox" id="aPool"            /> Pool</label>
+          </div>
+        </div>
+
+        <input type="hidden" id="editRoomId" value="" />
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" onclick="closeModal('roomModal')">Cancel</button>
+          <button type="submit" class="btn btn-gold" id="saveRoomBtn">Save Room</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

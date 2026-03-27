@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Dashboard — Hotel Vapi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏨</text></svg>" />
+</head>
+<body class="dashboard-page">
+
+<nav class="navbar scrolled" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-icon">🏨</span>
+      <span>Hotel <span class="logo-accent">Vapi</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="rooms.html" class="nav-link">Rooms</a></li>
+    </ul>
+    <div class="nav-actions" id="navActions">
+      <div id="userMenu" style="display:none;">
+        <div class="user-avatar-wrap" onclick="toggleUserDropdown()">
+          <img src="" alt="Avatar" class="user-avatar" id="navAvatar" />
+          <span id="navUserName"></span>
+          <span class="dropdown-arrow">▾</span>
+        </div>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="dashboard.html"><span>👤</span> My Dashboard</a>
+          <a href="bookings.html"><span>📋</span> My Bookings</a>
+          <a href="admin.html" id="adminLink" style="display:none;"><span>⚙️</span> Admin Panel</a>
+          <hr />
+          <a href="#" onclick="logout()"><span>🚪</span> Logout</a>
+        </div>
+      </div>
+      <div id="authButtons" style="display:none;">
+        <a href="login.html" class="btn btn-outline">Login</a>
+      </div>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+  <!-- SIDEBAR -->
+  <aside class="dashboard-sidebar">
+    <div class="sidebar-profile" id="sidebarProfile">
+      <img src="" alt="Avatar" class="sidebar-avatar" id="sidebarAvatar" />
+      <h3 id="sidebarName">Loading...</h3>
+      <span class="sidebar-role" id="sidebarRole">Guest</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="sidebar-link active" data-tab="overview" onclick="switchTab('overview')">
+        📊 Overview
+      </a>
+      <a href="#" class="sidebar-link" data-tab="bookings" onclick="switchTab('bookings')">
+        📋 My Bookings
+      </a>
+      <a href="#" class="sidebar-link" data-tab="profile" onclick="switchTab('profile')">
+        👤 My Profile
+      </a>
+      <a href="rooms.html" class="sidebar-link">
+        🏨 Browse Rooms
+      </a>
+      <hr class="sidebar-divider" />
+      <a href="#" class="sidebar-link sidebar-logout" onclick="logout()">
+        🚪 Logout
+      </a>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="dashboard-main">
+
+    <!-- OVERVIEW TAB -->
+    <div class="tab-content active" id="tab-overview">
+      <div class="dashboard-welcome">
+        <h1>Welcome back, <span id="welcomeName"></span>! 👋</h1>
+        <p>Here's a summary of your Hotel Vapi experience.</p>
+      </div>
+
+      <div class="stats-cards">
+        <div class="stat-card-sm">
+          <div class="stat-icon">📋</div>
+          <div class="stat-info">
+            <div class="stat-num" id="totalBookings">—</div>
+            <div class="stat-lbl">Total Bookings</div>
+          </div>
+        </div>
+        <div class="stat-card-sm">
+          <div class="stat-icon">✅</div>
+          <div class="stat-info">
+            <div class="stat-num" id="confirmedBookings">—</div>
+            <div class="stat-lbl">Confirmed</div>
+          </div>
+        </div>
+        <div class="stat-card-sm">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-info">
+            <div class="stat-num" id="upcomingBookings">—</div>
+            <div class="stat-lbl">Upcoming</div>
+          </div>
+        </div>
+        <div class="stat-card-sm">
+          <div class="stat-icon">💰</div>
+          <div class="stat-info">
+            <div class="stat-num" id="totalSpent">—</div>
+            <div class="stat-lbl">Total Spent</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recent-bookings-section">
+        <h2>Recent Bookings</h2>
+        <div id="recentBookingsList" class="bookings-list">
+          <div class="loading-shimmer"></div>
+          <div class="loading-shimmer"></div>
+        </div>
+        <a href="#" onclick="switchTab('bookings')" class="view-all-link">View all bookings →</a>
+      </div>
+    </div>
+
+    <!-- BOOKINGS TAB -->
+    <div class="tab-content" id="tab-bookings" style="display:none;">
+      <div class="tab-header">
+        <h1>My Bookings</h1>
+        <a href="rooms.html" class="btn btn-gold">+ New Booking</a>
+      </div>
+
+      <div class="bookings-filter">
+        <button class="filter-chip active" onclick="filterBookings('all', this)">All</button>
+        <button class="filter-chip" onclick="filterBookings('pending', this)">Pending</button>
+        <button class="filter-chip" onclick="filterBookings('confirmed', this)">Confirmed</button>
+        <button class="filter-chip" onclick="filterBookings('checked-out', this)">Completed</button>
+        <button class="filter-chip" onclick="filterBookings('cancelled', this)">Cancelled</button>
+      </div>
+
+      <div id="allBookingsList" class="bookings-list">
+        <div class="loading-shimmer"></div>
+        <div class="loading-shimmer"></div>
+        <div class="loading-shimmer"></div>
+      </div>
+    </div>
+
+    <!-- PROFILE TAB -->
+    <div class="tab-content" id="tab-profile" style="display:none;">
+      <div class="tab-header">
+        <h1>My Profile</h1>
+      </div>
+
+      <div class="profile-grid">
+        <div class="profile-card">
+          <h3>Personal Information</h3>
+          <form id="profileForm" onsubmit="updateProfile(event)">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="profileName" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" id="profileEmail" class="form-control" disabled />
+              <small>Email cannot be changed</small>
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" id="profilePhone" class="form-control" placeholder="+91 XXXXX XXXXX" />
+            </div>
+            <button type="submit" class="btn btn-gold">Save Changes</button>
+          </form>
+        </div>
+
+        <div class="profile-card">
+          <h3>Change Password</h3>
+          <form id="passwordForm" onsubmit="changePassword(event)">
+            <div class="form-group">
+              <label>Current Password</label>
+              <input type="password" id="currentPassword" class="form-control" required placeholder="Enter current password" />
+            </div>
+            <div class="form-group">
+              <label>New Password</label>
+              <input type="password" id="newPassword" class="form-control" required placeholder="Min. 6 characters" />
+            </div>
+            <div class="form-group">
+              <label>Confirm New Password</label>
+              <input type="password" id="confirmNewPassword" class="form-control" required placeholder="Repeat new password" />
+            </div>
+            <button type="submit" class="btn btn-outline">Change Password</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- CANCEL BOOKING MODAL -->
+<div class="modal-overlay" id="cancelModal" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Cancel Booking</h2>
+      <button class="modal-close" onclick="closeModal('cancelModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="cancel-warning">
+        ⚠️ Are you sure you want to cancel this booking?
+      </div>
+      <p id="cancelRefundInfo" class="cancel-refund-info"></p>
+      <div class="form-group">
+        <label>Reason for Cancellation (Optional)</label>
+        <textarea id="cancelReason" class="form-control" rows="3" placeholder="Please tell us why you're cancelling..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal('cancelModal')">Keep Booking</button>
+        <button class="btn btn-danger" id="confirmCancelBtn" onclick="confirmCancel()">Yes, Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

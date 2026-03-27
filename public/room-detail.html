@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Room Details — Hotel Vapi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏨</text></svg>" />
+</head>
+<body>
+
+<nav class="navbar scrolled" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-icon">🏨</span>
+      <span>Hotel <span class="logo-accent">Vapi</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="rooms.html" class="nav-link active">Rooms</a></li>
+      <li><a href="index.html#amenities" class="nav-link">Amenities</a></li>
+      <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+    </ul>
+    <div class="nav-actions" id="navActions">
+      <div id="authButtons">
+        <a href="login.html" class="btn btn-outline">Login</a>
+        <a href="register.html" class="btn btn-primary">Register</a>
+      </div>
+      <div id="userMenu" style="display:none;">
+        <div class="user-avatar-wrap" onclick="toggleUserDropdown()">
+          <img src="" alt="Avatar" class="user-avatar" id="navAvatar" />
+          <span id="navUserName"></span>
+          <span class="dropdown-arrow">▾</span>
+        </div>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="dashboard.html"><span>👤</span> My Dashboard</a>
+          <a href="bookings.html"><span>📋</span> My Bookings</a>
+          <a href="admin.html" id="adminLink" style="display:none;"><span>⚙️</span> Admin Panel</a>
+          <hr />
+          <a href="#" onclick="logout()"><span>🚪</span> Logout</a>
+        </div>
+      </div>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb-bar">
+  <div class="container">
+    <a href="index.html">Home</a> › <a href="rooms.html">Rooms</a> › <span id="breadcrumbRoom">Room Details</span>
+  </div>
+</div>
+
+<!-- ROOM DETAIL CONTENT -->
+<section class="section">
+  <div class="container">
+
+    <!-- Loading State -->
+    <div id="roomLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading room details...</p>
+    </div>
+
+    <!-- Room Content -->
+    <div id="roomContent" style="display:none;">
+
+      <!-- Image Gallery -->
+      <div class="room-gallery">
+        <div class="gallery-main">
+          <img src="" alt="Room" id="galleryMainImg" class="gallery-main-img" />
+          <div class="gallery-badge" id="roomTypeBadge"></div>
+        </div>
+        <div class="gallery-thumbs" id="galleryThumbs"></div>
+      </div>
+
+      <!-- Room Info Layout -->
+      <div class="room-detail-layout">
+        <!-- Left: Info -->
+        <div class="room-info-main">
+          <div class="room-detail-header">
+            <div>
+              <h1 id="roomName" class="room-detail-name"></h1>
+              <div class="room-meta">
+                <span id="roomNumber" class="room-meta-item">🔑 Room —</span>
+                <span id="roomFloor" class="room-meta-item">🏢 Floor —</span>
+                <span id="roomCapacity" class="room-meta-item">👥 — Guests</span>
+              </div>
+              <div class="room-rating-display">
+                <div class="stars-display" id="starsDisplay"></div>
+                <span id="ratingValue"></span>
+                <span id="reviewCount" class="review-count"></span>
+              </div>
+            </div>
+            <div class="room-price-display">
+              <span class="price-amount" id="roomPrice"></span>
+              <span class="price-label">/ night</span>
+            </div>
+          </div>
+
+          <div class="room-description">
+            <h3>About this Room</h3>
+            <p id="roomDescription"></p>
+          </div>
+
+          <!-- Amenities -->
+          <div class="room-amenities-section">
+            <h3>Room Amenities</h3>
+            <div class="amenities-list" id="amenitiesList"></div>
+          </div>
+
+          <!-- Reviews Section -->
+          <div class="reviews-section">
+            <h3>Guest Reviews</h3>
+            <div id="reviewsList" class="reviews-list">
+              <p class="no-reviews">No reviews yet. Be the first to review!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Booking Widget -->
+        <div class="booking-widget">
+          <div class="widget-header">
+            <span class="widget-price" id="widgetPrice"></span>
+            <span>per night</span>
+          </div>
+
+          <div class="widget-form">
+            <div class="form-group">
+              <label>📅 Check In</label>
+              <input type="date" id="widgetCheckIn" class="form-control" onchange="calcPrice()" />
+            </div>
+            <div class="form-group">
+              <label>📅 Check Out</label>
+              <input type="date" id="widgetCheckOut" class="form-control" onchange="calcPrice()" />
+            </div>
+            <div class="form-group">
+              <label>👥 Guests</label>
+              <select id="widgetGuests" class="form-control">
+                <option value="1">1 Guest</option>
+                <option value="2" selected>2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4">4 Guests</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>📝 Special Requests (Optional)</label>
+              <textarea id="widgetSpecial" class="form-control" rows="3" placeholder="Any special requests or notes..."></textarea>
+            </div>
+
+            <!-- Price Breakdown -->
+            <div class="price-breakdown" id="priceBreakdown" style="display:none;">
+              <div class="pb-row">
+                <span>₹<span id="pbPPN"></span> × <span id="pbNights"></span> nights</span>
+                <span>₹<span id="pbSubtotal"></span></span>
+              </div>
+              <div class="pb-row">
+                <span>GST (18%)</span>
+                <span>₹<span id="pbTax"></span></span>
+              </div>
+              <div class="pb-row pb-total">
+                <span><strong>Total</strong></span>
+                <span><strong>₹<span id="pbTotal"></span></strong></span>
+              </div>
+            </div>
+
+            <!-- Availability Status -->
+            <div class="availability-status" id="availabilityStatus"></div>
+
+            <button class="btn btn-gold btn-full btn-lg" id="bookNowBtn" onclick="initiateBooking()">
+              Book Now
+            </button>
+
+            <p class="widget-note">🔒 Secure booking. Free cancellation up to 48 hours before check-in.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Error State -->
+    <div id="roomError" style="display:none;" class="error-state">
+      <div class="error-icon">😕</div>
+      <h2>Room not found</h2>
+      <p>The room you're looking for doesn't exist or has been removed.</p>
+      <a href="rooms.html" class="btn btn-primary">Browse All Rooms</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- BOOKING MODAL -->
+<div class="modal-overlay" id="bookingModal" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Complete Your Booking</h2>
+      <button class="modal-close" onclick="closeModal('bookingModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="booking-summary">
+        <h3 id="modalRoomName"></h3>
+        <div class="summary-dates">
+          <span>📅 <span id="modalCheckIn"></span> → <span id="modalCheckOut"></span></span>
+          <span>🌙 <span id="modalNights"></span> nights</span>
+        </div>
+        <div class="summary-total">Total: <strong>₹<span id="modalTotal"></span></strong> (incl. GST)</div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-outline btn-full" onclick="proceedWithMockPayment()">
+          💳 Pay with Mock (Testing)
+        </button>
+        <button class="btn btn-gold btn-full" onclick="proceedWithRazorpay()">
+          🔐 Pay with Razorpay
+        </button>
+      </div>
+
+      <p class="modal-note">
+        A booking confirmation will be sent to your registered email address.
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <p>&copy; 2024 Hotel Vapi. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/room-detail.js"></script>
+</body>
+</html>

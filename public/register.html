@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — Hotel Vapi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏨</text></svg>" />
+</head>
+<body class="auth-page">
+
+<div class="auth-container">
+  <div class="auth-left">
+    <div class="auth-brand">
+      <a href="index.html" class="nav-logo">🏨 Hotel <span class="logo-accent">Vapi</span></a>
+    </div>
+    <div class="auth-left-content">
+      <h2>Join Hotel Vapi</h2>
+      <p>Create an account to unlock exclusive member benefits and streamline your booking experience.</p>
+      <div class="auth-features">
+        <div class="auth-feature"><span>✓</span> Faster checkout with saved info</div>
+        <div class="auth-feature"><span>✓</span> Email booking confirmations</div>
+        <div class="auth-feature"><span>✓</span> Easy booking history access</div>
+        <div class="auth-feature"><span>✓</span> Member-only special offers</div>
+      </div>
+    </div>
+    <div class="auth-left-bg"></div>
+  </div>
+
+  <div class="auth-right">
+    <div class="auth-form-wrap">
+      <h1 class="auth-title">Create Account</h1>
+      <p class="auth-subtitle">Already have an account? <a href="login.html">Sign in here</a></p>
+
+      <form id="registerForm" onsubmit="handleRegister(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="regName">Full Name *</label>
+            <div class="input-icon-wrap">
+              <span class="input-icon">👤</span>
+              <input type="text" id="regName" class="form-control" placeholder="Your full name" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="regPhone">Phone Number</label>
+            <div class="input-icon-wrap">
+              <span class="input-icon">📞</span>
+              <input type="tel" id="regPhone" class="form-control" placeholder="+91 XXXXX XXXXX" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="regEmail">Email Address *</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">✉️</span>
+            <input type="email" id="regEmail" class="form-control" placeholder="your@email.com" required autocomplete="email" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="regPassword">Password *</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="regPassword" class="form-control" placeholder="Min. 6 characters" required autocomplete="new-password" oninput="checkPasswordStrength(this.value)" />
+            <button type="button" class="toggle-password" onclick="togglePwd('regPassword', this)">👁️</button>
+          </div>
+          <div class="password-strength" id="passwordStrength"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="regConfirmPassword">Confirm Password *</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="regConfirmPassword" class="form-control" placeholder="Repeat your password" required autocomplete="new-password" />
+          </div>
+        </div>
+
+        <div class="form-check">
+          <input type="checkbox" id="agreeTerms" required />
+          <label for="agreeTerms">I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a></label>
+        </div>
+
+        <button type="submit" class="btn btn-gold btn-full btn-lg" id="registerBtn">
+          Create Account
+        </button>
+      </form>
+
+      <p class="auth-note">
+        🔒 Your information is protected with 256-bit SSL encryption.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  function checkPasswordStrength(password) {
+    const bar = document.getElementById('passwordStrength');
+    if (!password) { bar.innerHTML = ''; return; }
+
+    let strength = 0;
+    if (password.length >= 6)              strength++;
+    if (password.length >= 10)             strength++;
+    if (/[A-Z]/.test(password))           strength++;
+    if (/[0-9]/.test(password))           strength++;
+    if (/[^A-Za-z0-9]/.test(password))   strength++;
+
+    const labels = ['', 'Weak', 'Fair', 'Good', 'Strong', 'Very Strong'];
+    const colors = ['', '#ef4444', '#f97316', '#eab308', '#22c55e', '#16a34a'];
+
+    bar.innerHTML = `
+      <div style="margin-top:6px;">
+        <div style="height:4px;background:#333;border-radius:2px;overflow:hidden;">
+          <div style="height:100%;width:${(strength/5)*100}%;background:${colors[strength]};transition:all 0.3s;border-radius:2px;"></div>
+        </div>
+        <span style="font-size:0.75rem;color:${colors[strength]};">${labels[strength]}</span>
+      </div>
+    `;
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('token')) window.location.href = 'dashboard.html';
+  });
+</script>
+</body>
+</html>

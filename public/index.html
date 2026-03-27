@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hotel Vapi — Luxury Stays in Vapi, Gujarat</title>
+  <meta name="description" content="Experience luxury redefined at Hotel Vapi. Book premium rooms with stunning views, world-class amenities, and unforgettable hospitality in the heart of Vapi, Gujarat." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏨</text></svg>" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════ NAVBAR ═══════════════════════════════════ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-icon">🏨</span>
+      <span>Hotel <span class="logo-accent">Vapi</span></span>
+    </a>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="nav-link active">Home</a></li>
+      <li><a href="rooms.html" class="nav-link">Rooms</a></li>
+      <li><a href="#amenities" class="nav-link">Amenities</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+    </ul>
+
+    <div class="nav-actions" id="navActions">
+      <!-- Shown when logged out -->
+      <div id="authButtons">
+        <a href="login.html" class="btn btn-outline" id="loginBtn">Login</a>
+        <a href="register.html" class="btn btn-primary" id="registerBtn">Book Now</a>
+      </div>
+      <!-- Shown when logged in -->
+      <div id="userMenu" style="display:none;">
+        <div class="user-avatar-wrap" onclick="toggleUserDropdown()">
+          <img src="" alt="Avatar" class="user-avatar" id="navAvatar" />
+          <span id="navUserName"></span>
+          <span class="dropdown-arrow">▾</span>
+        </div>
+        <div class="user-dropdown" id="userDropdown">
+          <a href="dashboard.html"><span>👤</span> My Dashboard</a>
+          <a href="bookings.html"><span>📋</span> My Bookings</a>
+          <a href="admin.html" id="adminLink" style="display:none;"><span>⚙️</span> Admin Panel</a>
+          <hr />
+          <a href="#" onclick="logout()"><span>🚪</span> Logout</a>
+        </div>
+      </div>
+    </div>
+
+    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════ HERO ════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-bg" id="heroBg">
+    <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1600&q=80')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=1600&q=80')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1600&q=80')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1600&q=80')"></div>
+    <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1600&q=80')"></div>
+    <div class="hero-gradient-overlay"></div>
+    <div class="hero-particles" id="heroParticles"></div>
+  </div>
+
+  <!-- Slideshow Indicator Dots -->
+  <div class="hero-slide-dots" id="heroSlideDots"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">✨ Luxury Redefined</div>
+    <h1 class="hero-title">
+      Your Perfect<br />
+      <span class="hero-accent">Getaway</span> Awaits
+    </h1>
+    <p class="hero-subtitle">
+      Discover world-class hospitality at Hotel Vapi —<br />
+      where every stay becomes an unforgettable memory.
+    </p>
+
+    <!-- Booking Quick Search -->
+    <div class="booking-bar" id="bookingBar">
+      <div class="booking-field">
+        <label><span>📅</span> Check In</label>
+        <input type="date" id="heroCheckIn" class="booking-input" />
+      </div>
+      <div class="booking-divider"></div>
+      <div class="booking-field">
+        <label><span>📅</span> Check Out</label>
+        <input type="date" id="heroCheckOut" class="booking-input" />
+      </div>
+      <div class="booking-divider"></div>
+      <div class="booking-field">
+        <label><span>👥</span> Guests</label>
+        <select id="heroGuests" class="booking-input">
+          <option value="1">1 Guest</option>
+          <option value="2" selected>2 Guests</option>
+          <option value="3">3 Guests</option>
+          <option value="4">4 Guests</option>
+          <option value="5">5+ Guests</option>
+        </select>
+      </div>
+      <button class="btn btn-gold btn-search" onclick="searchRooms()">
+        Search Rooms 🔍
+      </button>
+    </div>
+  </div>
+
+  <div class="hero-scroll" onclick="document.getElementById('stats').scrollIntoView({behavior:'smooth'})">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════ STATS ════════════════════════════════════ -->
+<section class="stats-section" id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" data-target="500">0</div>
+        <div class="stat-label">Happy Guests</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" data-target="50">0</div>
+        <div class="stat-label">Premium Rooms</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" data-target="15">0</div>
+        <div class="stat-label">Years of Excellence</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" data-target="20">0</div>
+        <div class="stat-label">Awards Won</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ FEATURED ROOMS ══════════════════════════════ -->
+<section class="section" id="featured-rooms">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Our Rooms</span>
+      <h2 class="section-title">Curated Luxury Stays</h2>
+      <p class="section-subtitle">Each room is thoughtfully designed for your comfort and pleasure</p>
+    </div>
+
+    <div class="rooms-grid" id="featuredRoomsGrid">
+      <!-- Rooms loaded dynamically -->
+      <div class="room-skeleton"></div>
+      <div class="room-skeleton"></div>
+      <div class="room-skeleton"></div>
+    </div>
+
+    <div class="text-center mt-3">
+      <a href="rooms.html" class="btn btn-outline btn-lg">View All Rooms →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ AMENITIES ════════════════════════════════ -->
+<section class="section section-dark" id="amenities">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Why Choose Us</span>
+      <h2 class="section-title">World-Class Amenities</h2>
+      <p class="section-subtitle">Everything you need for the perfect stay</p>
+    </div>
+
+    <div class="amenities-grid">
+      <div class="amenity-card">
+        <div class="amenity-icon">🏊</div>
+        <h3>Infinity Pool</h3>
+        <p>Swim in our temperature-controlled infinity pool with panoramic views</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">🍽️</div>
+        <h3>Fine Dining</h3>
+        <p>Award-winning restaurant serving authentic Indian and international cuisine</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">💆</div>
+        <h3>Luxury Spa</h3>
+        <p>Rejuvenate with our signature spa treatments and wellness programs</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">🏋️</div>
+        <h3>Fitness Center</h3>
+        <p>State-of-the-art gym with personal trainers available 24/7</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">🚗</div>
+        <h3>Valet Parking</h3>
+        <p>Complimentary valet parking for all hotel guests</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">📶</div>
+        <h3>Free WiFi</h3>
+        <p>High-speed complimentary WiFi throughout the property</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">🛎️</div>
+        <h3>24/7 Concierge</h3>
+        <p>Our dedicated concierge team available around the clock for any request</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">🍳</div>
+        <h3>Included Breakfast</h3>
+        <p>Complimentary gourmet breakfast buffet for all guests</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ TESTIMONIALS ════════════════════════════════ -->
+<section class="section" id="testimonials">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Guest Reviews</span>
+      <h2 class="section-title">What Our Guests Say</h2>
+    </div>
+
+    <div class="testimonials-slider" id="testimonialsSlider">
+      <div class="testimonial-card active">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <p>"Absolutely stunning property! The Presidential Suite was beyond our expectations. The staff was incredibly attentive and the food was world-class. Will definitely be back!"</p>
+        <div class="testimonial-author">
+          <div class="t-avatar">RK</div>
+          <div>
+            <strong>Rajesh Kumar</strong>
+            <span>Mumbai, Maharashtra</span>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <p>"Hotel Vapi exceeded every expectation. The Deluxe Pool Side room had the most breathtaking views. Online booking was seamless and instant confirmation was a great touch."</p>
+        <div class="testimonial-author">
+          <div class="t-avatar">PS</div>
+          <div>
+            <strong>Priya Sharma</strong>
+            <span>Ahmedabad, Gujarat</span>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <p>"Perfect family vacation! The Family Comfort room was spacious and the kids loved the pool. Staff made sure we had everything we needed. Highly recommended!"</p>
+        <div class="testimonial-author">
+          <div class="t-avatar">AP</div>
+          <div>
+            <strong>Anand Patel</strong>
+            <span>Surat, Gujarat</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slider-dots">
+      <button class="dot active" onclick="goToSlide(0)"></button>
+      <button class="dot" onclick="goToSlide(1)"></button>
+      <button class="dot" onclick="goToSlide(2)"></button>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ CONTACT ═════════════════════════════════════ -->
+<section class="section section-dark" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <span class="section-badge">Get In Touch</span>
+        <h2>Contact Us</h2>
+        <p>We're here to help you plan the perfect stay. Reach out to our team anytime.</p>
+
+        <div class="contact-items">
+          <div class="contact-item">
+            <span class="contact-icon">📍</span>
+            <div>
+              <strong>Address</strong>
+              <p>Hotel Vapi, Industrial Area,<br />Vapi, Gujarat - 396195, India</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon">📞</span>
+            <div>
+              <strong>Phone</strong>
+              <p>+91-260-XXXXXXX</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon">✉️</span>
+            <div>
+              <strong>Email</strong>
+              <p>info@hotelvapi.com</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon">🕐</span>
+            <div>
+              <strong>Check-in / Check-out</strong>
+              <p>Check-in: 2:00 PM | Check-out: 11:00 AM</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-wrap">
+        <form class="contact-form" id="contactForm" onsubmit="submitContactForm(event)">
+          <div class="form-group">
+            <input type="text"  id="contactName"  class="form-control" placeholder="Your Name"    required />
+          </div>
+          <div class="form-group">
+            <input type="email" id="contactEmail" class="form-control" placeholder="Your Email"   required />
+          </div>
+          <div class="form-group">
+            <input type="text"  id="contactSubject" class="form-control" placeholder="Subject"    required />
+          </div>
+          <div class="form-group">
+            <textarea id="contactMessage" class="form-control" rows="5" placeholder="Your Message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-gold btn-full">Send Message 📩</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════ FOOTER ══════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">🏨 Hotel <span>Vapi</span></div>
+        <p>Luxury hospitality in the heart of Vapi, Gujarat. Your comfort is our priority.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Facebook">📘</a>
+          <a href="#" aria-label="Instagram">📸</a>
+          <a href="#" aria-label="Twitter">🐦</a>
+          <a href="#" aria-label="WhatsApp">💬</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="rooms.html">All Rooms</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="dashboard.html">My Dashboard</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Room Types</h4>
+        <ul>
+          <li><a href="rooms.html?type=Standard">Standard Rooms</a></li>
+          <li><a href="rooms.html?type=Deluxe">Deluxe Rooms</a></li>
+          <li><a href="rooms.html?type=Suite">Suites</a></li>
+          <li><a href="rooms.html?type=Presidential">Presidential Suite</a></li>
+          <li><a href="rooms.html?type=Family">Family Rooms</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Policies</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+          <li><a href="#">Cancellation Policy</a></li>
+          <li><a href="#">Refund Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2024 Hotel Vapi. All rights reserved. Made with ❤️ in Gujarat, India.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

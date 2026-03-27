@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Hotel Vapi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏨</text></svg>" />
+</head>
+<body class="auth-page">
+
+<div class="auth-container">
+  <!-- Left Panel -->
+  <div class="auth-left">
+    <div class="auth-brand">
+      <a href="index.html" class="nav-logo">🏨 Hotel <span class="logo-accent">Vapi</span></a>
+    </div>
+    <div class="auth-left-content">
+      <h2>Welcome Back</h2>
+      <p>Sign in to manage your bookings, view your stay history, and enjoy exclusive member benefits.</p>
+      <div class="auth-features">
+        <div class="auth-feature"><span>✓</span> Real-time room availability</div>
+        <div class="auth-feature"><span>✓</span> Instant booking confirmation</div>
+        <div class="auth-feature"><span>✓</span> Secure payment processing</div>
+        <div class="auth-feature"><span>✓</span> Easy cancellation management</div>
+      </div>
+    </div>
+    <div class="auth-left-bg"></div>
+  </div>
+
+  <!-- Right Panel: Login Form -->
+  <div class="auth-right">
+    <div class="auth-form-wrap">
+      <h1 class="auth-title">Sign In</h1>
+      <p class="auth-subtitle">Don't have an account? <a href="register.html">Register here</a></p>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="loginEmail">Email Address</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">✉️</span>
+            <input
+              type="email"
+              id="loginEmail"
+              class="form-control"
+              placeholder="your@email.com"
+              required
+              autocomplete="email"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword">
+            Password
+            <a href="forgot-password.html" class="forgot-link">Forgot Password?</a>
+          </label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">🔒</span>
+            <input
+              type="password"
+              id="loginPassword"
+              class="form-control"
+              placeholder="Your password"
+              required
+              autocomplete="current-password"
+            />
+            <button type="button" class="toggle-password" onclick="togglePwd('loginPassword', this)">👁️</button>
+          </div>
+        </div>
+
+        <div class="form-check">
+          <input type="checkbox" id="rememberMe" />
+          <label for="rememberMe">Remember me for 30 days</label>
+        </div>
+
+        <button type="submit" class="btn btn-gold btn-full btn-lg" id="loginBtn">
+          Sign In
+        </button>
+      </form>
+
+      <div class="auth-divider"><span>or try demo</span></div>
+
+      <div class="demo-creds">
+        <button class="demo-btn" onclick="fillDemo('admin@hotelvapi.com', 'Admin@123')">
+          👑 Login as Admin
+        </button>
+        <button class="demo-btn" onclick="fillDemo('user@demo.com', 'Demo@123')">
+          👤 Login as Guest
+        </button>
+      </div>
+
+      <p class="auth-note">
+        🔒 Protected by 256-bit SSL encryption. Your data is safe with us.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  // Pre-fill demo credentials
+  function fillDemo(email, password) {
+    document.getElementById('loginEmail').value = email;
+    document.getElementById('loginPassword').value = password;
+    showToast('Demo credentials filled. Click Sign In!', 'info');
+  }
+
+  // Check if already logged in
+  window.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      window.location.href = 'dashboard.html';
+    }
+  });
+</script>
+</body>
+</html>
