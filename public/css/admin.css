@@ -1,5 +1,5 @@
 /* Admin Panel Specific Styles */
-.admin-page { background: #070712; }
+.admin-page { background: #d9d9e1; }
 .admin-tag { font-size: 0.6rem; background: rgba(201,169,110,0.15); color: var(--gold); padding: 0.15rem 0.5rem; border-radius: 4px; vertical-align: middle; font-family: 'Inter', sans-serif; border: 1px solid rgba(201,169,110,0.3); letter-spacing: 1px; font-weight: 600; }
 .admin-layout { display: flex; min-height: 100vh; padding-top: 65px; }
 .admin-sidebar { width: 240px; background: var(--dark-card); border-right: 1px solid var(--dark-border); padding: 1.5rem 1rem; position: sticky; top: 65px; height: calc(100vh - 65px); overflow-y: auto; flex-shrink: 0; }
